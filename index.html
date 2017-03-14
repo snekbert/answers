@@ -9,26 +9,32 @@ div.fill { left: 0; right: 0; top: 0; bottom: 0; text-align: center; } img.fillo
 </style>
 <body>
   <div class="fill">
-    <img class="fillo" id="wiskimg" border="3" src="http://cdpcontent.toegang.nu/e1968270-2370-4bc8-982c-e80822a715df/20160428084616/extract/assets/img/layout/5.jpg">
+    <img class="fillo" id="wiskimg" border="3" src="http://cdpcontent.toegang.nu/7b69f01a-78d3-4567-a876-aaf8f1d8ca14/20160428084943/extract/assets/img/layout/5.jpg">
   </div>
   <br>
   <button style="font-size:64pt;height:140px;width:30%;background-color:black;color:white;" onclick="prevPage()"><</button>
-  <input placeholder="Blz" id="input" style="background-color:blue;height:100px;font-size:30pt;width:18%;text-align:center;"></input>
-  <button onclick="goToPage()" style="height:100px;width:18%;font-size:30pt;background-color:red;">GO</button>
+  <input placeholder="Blz" id="input" style="background-color:blue;height:100px;font-size:30pt;width:18%;text-align:center;" onkeypress="return runScript(event)" />
+  <button onclick="goToPage()" style="height:100px;width:18%;font-size:30pt;background-color:red;cursor:hand;">GO</button>
   <button style="font-size:64pt;height:140px;width:30%;background-color:black;color:white;" onclick="nextPage()">></button>
 </body>
 <script>
+var links = ["http://cdpcontent.toegang.nu/e1968270-2370-4bc8-982c-e80822a715df/20160428084616/extract/assets/img/layout/", "http://cdpcontent.toegang.nu/7b69f01a-78d3-4567-a876-aaf8f1d8ca14/20160428084943/extract/assets/img/layout/"];
+
 function nextPage() {
   var str = document.getElementById("wiskimg").src;
-  var stro = str.replace("http://cdpcontent.toegang.nu/e1968270-2370-4bc8-982c-e80822a715df/20160428084616/extract/assets/img/layout/", "");
-  var strok = stro.replace(".jpg", "");
-    document.getElementById("wiskimg").src = "http://cdpcontent.toegang.nu/e1968270-2370-4bc8-982c-e80822a715df/20160428084616/extract/assets/img/layout/" + ++strok + ".jpg";
+  var strok = str.substring(str.lastIndexOf("/")+1,str.lastIndexOf(".jpg"));
+    document.getElementById("wiskimg").src = links[1] + ++strok + ".jpg";
 }
 function prevPage() {
   var dtr = document.getElementById("wiskimg").src;
-  var dtro = dtr.replace("http://cdpcontent.toegang.nu/e1968270-2370-4bc8-982c-e80822a715df/20160428084616/extract/assets/img/layout/", "");
-  var dtrok = dtro.replace(".jpg", "");
-    document.getElementById("wiskimg").src = "http://cdpcontent.toegang.nu/e1968270-2370-4bc8-982c-e80822a715df/20160428084616/extract/assets/img/layout/" + --dtrok + ".jpg";
+  var dtrok = dtr.substring(dtr.lastIndexOf("/")+1,dtr.lastIndexOf(".jpg"));
+    document.getElementById("wiskimg").src = links[1] + --dtrok + ".jpg";
+}
+
+function runScript(e) {
+  if (e.keyCode == 13) {
+    goToPage();
+  }
 }
 function goToPage() {
   var ftr = document.getElementById("input").value;
