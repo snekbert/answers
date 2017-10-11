@@ -41,5 +41,28 @@ function goToPage() {
   var ftro = parseInt(ftr) + 2;
   document.getElementById("wiskimg").src = links[1] + ftro + ".jpg";
 }
+
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+        // up arrow
+    }
+    else if (e.keyCode == '40') {
+        // down arrow
+    }
+    else if (e.keyCode == '37') {
+       // left arrow
+      prevPage();
+    }
+    else if (e.keyCode == '39') {
+       // right arrow
+      nextPage();
+    }
+
+}
 </script>
 </html>
