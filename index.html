@@ -1,68 +1,79 @@
+<!DOCTYPE html>
 <html>
-<head>
-  <title>
-    Answers
-  </title>
-</head>
-<style>
-div.fill { left: 0; right: 0; top: 0; bottom: 0; text-align: center; } img.fillo { max-width: 99%; max-height: 99%; }
-</style>
-<body>
-  <div class="fill">
-    <img class="fillo" id="wiskimg" border="3" src="http://cdpcontent.toegang.nu/7b69f01a-78d3-4567-a876-aaf8f1d8ca14/20160428084943/extract/assets/img/layout/5.jpg">
-  </div>
-  <br>
-  <button style="font-size:64pt;height:140px;width:30%;background-color:black;color:white;" onclick="prevPage()"><</button>
-  <input placeholder="Blz" id="input" style="background-color:blue;height:100px;font-size:30pt;width:18%;text-align:center;" onkeypress="return runScript(event)" />
-  <button onclick="goToPage()" style="height:100px;width:18%;font-size:30pt;background-color:red;cursor:hand;">GO</button>
-  <button style="font-size:64pt;height:140px;width:30%;background-color:black;color:white;" onclick="nextPage()">></button>
-</body>
-<script>
-var links = ["http://cdpcontent.toegang.nu/e1968270-2370-4bc8-982c-e80822a715df/20160428084616/extract/assets/img/layout/", "http://cdpcontent.toegang.nu/ec814dec-9877-4c7d-9739-3c4bf1aaf616/20151117133700/extract/assets/img/layout/"];
+  <head>
+    <meta charset="ISO-8859-1"> 
+    <title>Answers</title>
+  </head>
+  <style>
+    .image-view { text-align: center; }
+    img { max-width: 99%; max-height: 99%; }
+    .btn-nav { height: 140px; font-size: 64pt; width: 28%; background-color: #1e272e; color: white; border-radius: 16px; }
+    form { white-space: nowrap; display: inline-block; width: 40%; }
+    .input-page { border-radius: 16px; height: 100px; background-color: #0652DD; width: 48%; font-size: 30pt; text-align: center; }
+    .btn-page { border-radius: 16px; height: 100px; width: 48%; font-size: 30pt; background-color: #EA2027; }
+    select { display: block; margin-left: auto; margin-right: auto; width: 28%; }
+  </style>
+  <body>
+    <div class="image-view">
+      <img id="image" border="3" src="">
+    </div>
+    <div class="controls">
+      <button id="btn-prev" class="btn-nav" onclick=""><</button>
+      <form onsubmit="return false;">
+        <input id="input-page" class="input-page" type="text" placeholder="Page">
+        <input id="btn-page" class="btn-page" type="submit" value="Go">
+      </form>
+      <button id="btn-next" class="btn-nav" onclick="">></button><br><br>
+      <select id="select-book">
+        <option value="0">Deel 1</option>
+        <option value="1">Deel 2</option>
+        <option value="2">Deel 3</option>
+        <option value="3" selected="selected">Deel 4</option>
+      </select>
+    </div>
+  </body>
+  <script>
+  window.onload = function() {
+    const urls = [
+      'http://cdpcontent.toegang.nu/e1968270-2370-4bc8-982c-e80822a715df/20160428084616/extract/assets/img/layout/',
+      'http://cdpcontent.toegang.nu/7b69f01a-78d3-4567-a876-aaf8f1d8ca14/20160428084943/extract/assets/img/layout/',
+      'http://cdpcontent.toegang.nu/ec814dec-9877-4c7d-9739-3c4bf1aaf616/20151117133700/extract/assets/img/layout/',
+      'http://cdpcontent.toegang.nu/d8097028-a26c-433d-8210-6522f15878ce/20180405065029/extract/assets/img/layout/'
+    ]
+    let url = urls[urls.length - 1]
+    const img = document.getElementById('image')
+    img.src = url + '1.jpg'
+    document.onkeydown = checkKey
+    document.getElementById('btn-prev').addEventListener('click', function() { prevPage() })
+    document.getElementById('btn-next').addEventListener('click', function() { nextPage() })
+    document.getElementById('btn-page').addEventListener('click', function() { goToPage(document.getElementById('input-page').value) })
+    document.getElementById('select-book').addEventListener('change', function() { 
+      url = urls[Number(document.getElementById('select-book').value)]
+      img.src = url + '1.jpg'
+    })
 
-function nextPage() {
-  var str = document.getElementById("wiskimg").src;
-  var strok = str.substring(str.lastIndexOf("/")+1,str.lastIndexOf(".jpg"));
-    document.getElementById("wiskimg").src = links[1] + ++strok + ".jpg";
-}
-function prevPage() {
-  var dtr = document.getElementById("wiskimg").src;
-  var dtrok = dtr.substring(dtr.lastIndexOf("/")+1,dtr.lastIndexOf(".jpg"));
-    document.getElementById("wiskimg").src = links[1] + --dtrok + ".jpg";
-}
+    function prevPage() {
+      const src = img.src
+      const prevPage = Number(src.substring(src.lastIndexOf('/') + 1, src.lastIndexOf('.jpg'))) - 1
+      img.src = url + prevPage + '.jpg'
+    }
 
-function runScript(e) {
-  if (e.keyCode == 13) {
-    goToPage();
+    function nextPage() {
+      const src = img.src
+      const nextPage = Number(src.substring(src.lastIndexOf('/') + 1, src.lastIndexOf('.jpg'))) + 1
+      img.src = url + nextPage + '.jpg'
+    }
+
+    function goToPage(page) {
+      page = Number(page) + 2
+      if (isNaN(page)) return
+      img.src = url + page + '.jpg'
+    }
+
+    function checkKey(e) {
+      if (e.keyCode == '37') prevPage()
+      else if (e.keyCode == '39') nextPage()
+    }
   }
-}
-function goToPage() {
-  var ftr = document.getElementById("input").value;
-  var ftro = parseInt(ftr) + 2;
-  document.getElementById("wiskimg").src = links[1] + ftro + ".jpg";
-}
-
-document.onkeydown = checkKey;
-
-function checkKey(e) {
-
-    e = e || window.event;
-
-    if (e.keyCode == '38') {
-        // up arrow
-    }
-    else if (e.keyCode == '40') {
-        // down arrow
-    }
-    else if (e.keyCode == '37') {
-       // left arrow
-      prevPage();
-    }
-    else if (e.keyCode == '39') {
-       // right arrow
-      nextPage();
-    }
-
-}
-</script>
+  </script>
 </html>
